@@ -32,7 +32,7 @@ An interview test from AImazing.
 ## 完成情況
 
 - unit test -> 未完成
-- 部署至雲端平台 -> 未完成 
+- 部署至雲端平台 -> 未完成 
 
 ---
 

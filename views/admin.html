@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>後台頁面</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+</head>
+<body>
+    <div class="container">
+        <p>
+            <button type="button" id="search">顯示會員列表</button>
+        </p>
+        <p id="content"> </p>
+        <div>
+            <input type="text" id="username" name="username" placeholder="會員帳號">
+            <input type="text" id="password" name="password" placeholder="會員密碼">
+            <button id="register_submit">新增會員帳密</button>
+        </div>
+        <div>
+            <input type="text" id="delusername" name="delusername" placeholder="會員帳號">
+            <button id="delete_submit">刪除會員資料</button>
+        </div>
+        <div>
+            <input type="text" id="upusername" name="upusername" placeholder="會員帳號">
+            <input type="text" id="uppassword" name="uppassword" placeholder="會員新密碼">
+            <button id="update_submit">修改會員資料</button>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        $("#search").click(function(){
+            // 發送ajax請求，使用post方式發送json字串給後台login
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/search",
+                dataType: "json",
+                // data:{ username: 123, password: 456 },
+                error: function () {
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("查詢失敗");
+                },
+                success: function(data){
+                    // alert("成功");
+                    // console.log(data);
+                    document.getElementById("content").innerHTML = JSON.stringify(data);
+                    
+                }
+            });
+        });
+
+        $("#register_submit").click(function(){
+            var username=$('#username').val();
+            var password=$('#password').val();
+            // 發送ajax請求，使用post方式發送json字串給後台login
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/register",
+                dataType: "json",
+                data:{ username: username, password: password },
+                success: function(data){
+                    // 接收返回的資料，前端判斷後採取動作
+                    console.log(data);
+                    if(data){
+                        if(data.message == false){
+                            alert('帳號已存在');
+                            window.location.href="#";
+                        } else {
+                            alert('新增成功');
+                        }
+                    }
+                }
+            });
+        });
+
+        $("#delete_submit").click(function(){
+            var delusername=$('#delusername').val();
+            // 發送ajax請求，使用post方式發送json字串給後台login
+            $.ajax({
+                type: "delete",
+                url: "http://localhost:3000/delete",
+                // dataType: "json",
+                data:{ username: delusername},
+                success: function(data){
+                    // 接收返回的資料，前端判斷後採取動作
+                    if(data){
+                        if(data.status == "success"){
+                            alert('刪除成功');                          
+                        } else if(data.status == "fail") {
+                            alert('刪除失敗');
+                        } else if(data.status == "not found") {
+                            alert('無此帳號');
+                        } else {
+                            alert('未知錯誤');
+                        }
+                    }
+                }
+            });
+        });
+
+        $("#update_submit").click(function(){
+            var upusername=$('#upusername').val();
+            var uppassword=$('#uppassword').val();
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/update",
+                // dataType: "json",
+                data:{ username: upusername, password: uppassword},
+                success: function(data){
+                    // 接收返回的資料，前端判斷後採取動作
+                    if(data){
+                        if(data.status == "success"){
+                            alert('修改成功');                          
+                        } else if(data.status == "fail") {
+                            alert('修改失敗');
+                        } else if(data.status == "not found") {
+                            alert('無此帳號');
+                        } else {
+                            alert('未知錯誤');
+                        }
+                    }
+                }
+            });
+        });
+    })
+</script>

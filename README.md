@@ -41,6 +41,7 @@ An interview test from AImazing.
 - Node
 - express
 - mongodb
+- socket.io
 
 --- 
 

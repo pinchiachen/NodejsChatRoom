@@ -1,7 +1,5 @@
 # NodejsChatRoom
 
-> *這個 repo 是我在沒寫過 Javascript 的情況下收到的一份面試作業，雖然現在回頭看是一堆糞 code，但也是他帶我進入 Javascript 的世界，別具意義，特此紀念。*
-
 An interview test from AImazing.
 
 ---
